@@ -1,0 +1,19 @@
+!!!
+%head
+  
+  %title
+    = @title if @title
+  %link{:rel=>'stylesheet', :href=>'/css/application.css', :type=>'text/css', :media=>'screen, projection'}
+  %link{:rel=>'stylesheet', :href=>'/css/jquery.treeview.css', :type=>'text/css', :media=>'screen, projection'}
+  %script{:src => '/js/jquery.js'}
+  %script{:src => '/js/jquery.treeview.js'} 
+  :javascript
+    $(document).ready(function(){
+      $("#tree_objects").treeview();
+    });
+%html
+  #page
+    #tree
+      = @root.html_tree if @root
+    #content
+      = yield
