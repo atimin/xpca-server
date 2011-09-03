@@ -2,6 +2,7 @@ require 'java'
 
 $: << File.join(File.dirname(__FILE__),'lib')
 java_import  'net.flipback.xpca.annotations.AnnotaionAccessor'
+java_import  'net.flipback.xpca.annotations.Field'
 
 module HtmlHelper  
   attr_accessor :prefix
@@ -32,16 +33,22 @@ module HtmlHelper
     root.html_tree
   end
   
-  def html_state
-    html = "" 
-    AnnotaionAccessor.getFields(self).each_pair do |f, o|
-      html << f.title + ":"
-      if o.class <= XObject
-        o.extend(HtmlHelper)
-        o.prefix = @prefix
-        html << o.html_link
+  def html_show
+    html = ""
+    field_names = AnnotaionAccessor.getFieldNames(self)
+    AnnotaionAccessor.getFieldValues(self).each_pair do |f, o|
+      html << f.title + ":\t"
+      case f.inputType
+      when Field::InputType::TEXT then
+        html << "<input type='text' name='obj[#{field_names[f]}]' value='#{o.to_s}'/>"    
       else
-        html << o.to_s
+        if o.class <= XObject
+          o.extend(HtmlHelper)
+          o.prefix = @prefix
+          html << o.html_link
+        else
+          html << o.to_s
+        end
       end
       html << "<br/>"
     end

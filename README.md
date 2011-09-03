@@ -19,7 +19,7 @@ Web application is used for data access and configuration  on HTML, JSON, etc pr
 	|     Databse configuration      |		|							  |
 	|							     |<---->+							  |
 	|		+-----------------+      |		|                             |
-	+-------|   Hibernate     |------+		|		Web application       |
+	+-------|   Hibernate     |------+		|		REST Server           |
 			+--------+--------+				|		Sinatra + jruby       |
 		    	     ^         				|		                      |
 		        	 |						|                             |

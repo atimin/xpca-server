@@ -4,6 +4,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.Session;
 
+import net.flipback.xpca.annotations.AnnotationAccessorTest;
 import net.flipback.xpca.core.XGroup;
 import net.flipback.xpca.core.XGroupTest;
 import net.flipback.xpca.core.XObject;
@@ -20,7 +21,7 @@ public class AllTests {
 	public static Test suite() {
 		InitDB();
 		
-		Class[] testClasses  = { XObjectTest.class, XGroupTest.class };
+		Class[] testClasses  = { XObjectTest.class, XGroupTest.class, AnnotationAccessorTest.class };
 		TestSuite suite = new TestSuite(testClasses);
 		
 		return suite;

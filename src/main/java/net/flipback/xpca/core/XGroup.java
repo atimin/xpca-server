@@ -52,6 +52,17 @@ public class XGroup extends XObject {
 		return result;
 	}
 	
+	@Override
+	public void genFullName() {
+		super.genFullName();
+		
+		if (children != null) {
+			for (XObject child : children) {
+				child.genFullName();
+			}
+		}
+	}
+	
 	public XGroup() {		
 		super();
 		this.setName("new_group");

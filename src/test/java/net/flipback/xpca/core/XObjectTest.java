@@ -47,6 +47,8 @@ public class XObjectTest extends TestCase {
 	public void testGenNewFullName() {
 		obj.setName("new_name");
 		assertTrue(obj.getFullName().equals("/group_1/new_name"));
+		obj.getGroup().setName("new_group");
+		assertTrue(obj.getFullName().equals("/new_group/new_name"));
 	}
 	
 	@Test

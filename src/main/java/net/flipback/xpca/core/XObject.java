@@ -140,7 +140,7 @@ public class XObject {
 		return (int)((0x9e370001 * sum) >> 32);
 	}
 	
-	private void genFullName(){
+	public void genFullName(){
 		String fullName = this.getName();
 
 		if (this.getGroup() != null){

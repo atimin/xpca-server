@@ -4,6 +4,7 @@ require 'java'
 
 $: << File.join(File.dirname(__FILE__),'lib')
 require 'helpers/html_helper'
+require 'helpers/java_helper'
 
 $: << File.join(File.dirname(__FILE__),'..')
 
@@ -84,11 +85,19 @@ class RESTServer < Sinatra::Base
     @root.prefix = @@prefix
   end
 
-  get %r{/xpca/(.*)} do |path|
+  post Regexp.new(@@prefix + "/(.*)") do |path|
+    @obj = @@root.getObject(path)
+    @obj.extend(JavaHelper)
+    @obj.update_fields(params["obj"])
+    @session.flush
+    redirect @@prefix + @obj.fullName
+  end
+  
+  get Regexp.new(@@prefix + "/(.*)") do |path|
     @obj = @@root.getObject(path)
     @obj.extend(HtmlHelper)
     @obj.prefix = @@prefix
-    haml :object_state
+    haml :object_show
   end
   
   after do
