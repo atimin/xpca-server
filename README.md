@@ -2,8 +2,8 @@ XPCA-Server is experimental server for [XPCA](http://www.xpca.org/).
 
 Required
 -------------------------------------
-Maven 3 
-JDK 1.5
+- Maven 3 
+- JDK 1.5
 
 [See](https://github.com/torquebox/jruby-maven-plugins) for setting maven for work with jruby and rubygems.
 
@@ -46,8 +46,8 @@ Usage
 
 Run in root directory
 
-$mvn install
-$mvn gem:exec -rf :rest-server
+	$mvn install
+	$mvn gem:exec -rf :rest-server
 
 And open in browser http://127.0.0.1:4567/xpca/
 
