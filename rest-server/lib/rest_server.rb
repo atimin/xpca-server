@@ -3,17 +3,16 @@ require 'haml'
 require 'java'
 
 $: << File.join(File.dirname(__FILE__),'lib')
+
 require 'helpers/html_helper'
 require 'helpers/java_helper'
+require 'helpers/package_helper'
 
 $: << File.join(File.dirname(__FILE__),'..')
 
 java_import 'org.hibernate.cfg.Configuration'
-java_import 'net.flipback.xpca.core.XGroup'
-java_import 'net.flipback.xpca.core.XObject'
-java_import 'net.flipback.xpca.core.XPoint'
 
-
+include PackageHelper
 
 SF = Configuration.new.configure.buildSessionFactory
 
@@ -21,39 +20,38 @@ def init_db
     session =  SF.openSession  
     session.beginTransaction
     # Create root group
-    root = XGroup.new("/")
+    root = get_instance("XGroup", "/")
     root_id = session.save(root)
     # Create groups into root
-    group_1 = XGroup.new("group_1")
-    group_1.setGroup(root)
+    group_1 = get_instance("XGroup", "group_1")
+    group_1.group = root
     session.save(group_1)
     
-    group_2 = XGroup.new("group_2")
-    group_2.setGroup(root)
+    group_2 = get_instance("XGroup", "group_2")
+    group_2.group = root
     session.save(group_2)
     
     #Create objects into group_1
-    object_1 = XObject.new("object_1")
-    object_1.setGroup(group_1)
+    object_1 = get_instance("XObject", "object_1")
+    object_1.group = group_1
     session.save(object_1)
     
-    point_1 = XPoint.new("point_1")
-    point_1.setGroup(group_1)
+    point_1 = get_instance("XPoint", "point_1")
+    point_1.group = group_1
     session.save(point_1)
     
     #Create objects into group_2
-    object_2 = XObject.new("object_2")
-    object_2.setGroup(group_2)
+    object_2 = get_instance("XObject", "object_2")
+    object_2.group = group_2
     session.save(object_2)
     
-    point_2 = XPoint.new("point_2")
-    point_2.setGroup(group_2)
+    point_2 = get_instance("XPoint", "point_2")
+    point_2.group = group_2
     session.save(point_2)
     
     session.getTransaction.commit
     session.close
-    
-    #
+
     root_id
 end
 
@@ -87,9 +85,10 @@ class RESTServer < Sinatra::Base
 
   post Regexp.new(@@prefix + "/(.*)") do |path|
     @obj = @@root.getObject(path)
-    @obj.extend(JavaHelper)
-    @obj.update_fields(params["obj"])
-    @session.flush
+    if @obj
+      @obj.extend(JavaHelper)
+      @obj.update_fields(params["obj"])
+    end
     redirect @@prefix + @obj.fullName
   end
   
@@ -101,6 +100,7 @@ class RESTServer < Sinatra::Base
   end
   
   after do
+    @session.flush
     @session.getTransaction.commit
     @session.close
   end

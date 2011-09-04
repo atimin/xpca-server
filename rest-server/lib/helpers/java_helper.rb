@@ -20,4 +20,4 @@ module JavaHelper
     end
     raise NoMethodError.new, "undefined method `#{meth}' for #{self.inspect}:#{self.class}"
   end
-end
+end

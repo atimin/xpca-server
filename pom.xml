@@ -2,78 +2,10 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>net.flipback.xpca</groupId>
   <artifactId>xpca-server</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <build>
-  	<plugins>
-  	     <plugin>
-            <groupId>de.saumya.mojo</groupId>
-            <artifactId>gem-maven-plugin</artifactId>
-            <version>0.28.3</version>
-            <extensions>false</extensions> 
-            <configuration>
-                <script>
-                require 'rubygems'
-                require 'rest_server/rest_server'
-                </script>
-            </configuration>
-          </plugin>
-  	</plugins>
-  </build>
-  <dependencies>
-    <dependency>
-       <groupId>rubygems</groupId>
-       <artifactId>sinatra</artifactId>
-       <version>1.2.6</version>
-       <type>gem</type>
-  	</dependency>
-  	    <dependency>
-       <groupId>rubygems</groupId>
-       <artifactId>haml</artifactId>
-       <version>3.1.2</version>
-       <type>gem</type>
-  	</dependency>
-	<dependency>
-       <groupId>org.hibernate</groupId>
-       <artifactId>hibernate-jpamodelgen</artifactId>
-       <version>1.1.1.Final</version>
- 	</dependency>
- 		<dependency>
-       <groupId>org.hibernate</groupId>
-       <artifactId>hibernate-core</artifactId>
-       <version>3.6.7.Final</version>
- 	</dependency>
- 	<dependency>
-    	<groupId>hsqldb</groupId>
-    	<artifactId>hsqldb</artifactId>
-    	<version>1.8.0.10</version>
-	</dependency>
-	<dependency>
-    	<groupId>org.slf4j</groupId>
-    	<artifactId>slf4j-simple</artifactId>
-    	<version>1.6.1</version>
-	</dependency>
-	<dependency>
-    	<groupId>javassist</groupId>
-    	<artifactId>javassist</artifactId>
-    	<version>3.12.0.GA</version> 
-		<type>jar</type> 
-		<scope>compile</scope> 
-	</dependency>	
-	<dependency>
-    	<groupId>junit</groupId>
-    	<artifactId>junit</artifactId>
-    	<version>4.8.2</version>
-	</dependency>
-	<dependency>
-    	<groupId>commons-lang</groupId>
-    	<artifactId>commons-lang</artifactId>
-    	<version>2.3</version>
-	</dependency>	
-  </dependencies>
-  <repositories>
-    <repository>
-      <id>rubygems-releases</id>
-      <url>http://gems.saumya.de/releases</url>
-    </repository>   
-  </repositories>
-</project>
+  <version>0.0.0</version>
+  <packaging>pom</packaging>
+  <modules>
+    <module>engine</module>
+    <module>rest-server</module>
+  </modules>
+</project> 	

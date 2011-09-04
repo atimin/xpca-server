@@ -46,7 +46,8 @@ Usage
 
 Run in root directory
 
-$mvn gem:exec
+$mvn install
+$mvn gem:exec -rf :rest-server
 
 And open in browser http://127.0.0.1:4567/xpca/
 

@@ -52,10 +52,12 @@ module HtmlHelper
       end
       html << "<br/>"
     end
+    html << "<selected name[class]>"
+    html << "</selected>"
     html
   end
   
   def html_link
     "<a href='#{@prefix + self.getFullName}'>#{self.getName}</a>"
   end
-end
+end
