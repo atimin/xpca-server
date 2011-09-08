@@ -3,15 +3,21 @@
   <groupId>net.flipback.xpca.xpca-server</groupId>
   <artifactId>rest-server</artifactId>
   <version>0.0.0</version>
-  
+
   <parent>
   	<groupId>net.flipback.xpca</groupId>
   	<artifactId>xpca-server</artifactId>
   	<version>0.0.0</version>
   </parent>
-  
+
   <build>
   	<plugins>
+        <plugin>
+            <groupId>de.saumya.mojo</groupId>
+            <artifactId>rake-maven-plugin</artifactId>
+            <version>0.28.3</version>
+            <extensions>true</extensions>
+        </plugin>
   	     <plugin>
             <groupId>de.saumya.mojo</groupId>
             <artifactId>gem-maven-plugin</artifactId>
@@ -59,6 +65,12 @@
        <version>3.1.2</version>
        <type>gem</type>
   	</dependency>
+    <dependency>
+        <groupId>rubygems</groupId>
+        <artifactId>rake</artifactId>
+        <version>0.9.2</version>
+        <type>gem</type>
+    </dependency>
   </dependencies>
   <repositories>
     <repository>
