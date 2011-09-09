@@ -18,8 +18,12 @@ describe JavaHelper do
     @obj.name.should eql("new_name_object")
   end
 
-  it "should update field form Hash" do
-    @obj.update_fields(:name => "new_name_object")
+  it "should set fields from Hash" do
+    @obj.from_hash(:name => "new_name_object")
     @obj.name.should eql("new_name_object")
+  end
+
+  it "should get fields to Hash" do
+    @obj.to_hash.should eql(:name => "name_objects", :full_name => "name_objects", :class => @obj.getClass)
   end
 end
