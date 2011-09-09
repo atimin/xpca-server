@@ -21,47 +21,49 @@ public class XObject {
 	public XObject() {
 		this.setName("new_object");
 	}
-	
+
 	public XObject(String name) {
 		this.setName(name);
 	}
-	
+
 	@Id
 	@GeneratedValue
 	@Field(title="ID")
 	public Long getId() { return id; }
 	public void setId(Long id) { this.id = id; }
 	private Long id;
-	
+
 	@Field(title="Name", inputType=InputType.TEXT)
 	public String getName() { return name; }
-	public void setName(String name) { 
+	public void setName(String name) {
 		this.name = name;
 		genFullName();
 	}
-	private String name;	
-	
+	private String name;
+
 	@ManyToOne
 	@JoinColumn(name="object_id")
 	@Field(title="Group")
 	public XGroup getGroup() { return group; }
-	public void setGroup(XGroup group) { 
+	public void setGroup(XGroup group) {
 		this.group = group;
 		genFullName();
 	}
 	private XGroup group;
-	
+
 	public String getFullName() { return fullName; }
 	public void setFullName(String fullName) { this.fullName = fullName; }
 	private String fullName;
-	
+
 	@Transient
 	public XGroup getRoot() {
 		XGroup root = null;
 		if (group == null && this instanceof XGroup) {
 			root = (XGroup)this;
 		} else {
-			root = group.getRoot();
+            if (group != null) {
+			    root = group.getRoot();
+            }
 		}
 		return root;
 	}
@@ -76,44 +78,44 @@ public class XObject {
 				if (value instanceof XObject) {
 					XObject xobj = (XObject)value;
 					result += "=" + xobj.getFullName();
-				} else {	
+				} else {
 					result += "=" + value.toString();
 				}
 				return result;
 			}
 		};
-		
+
 		try {
 			result += StringUtils.join(AnnotaionAccessor.calcFields(this, stringBuilder).toArray(), ",");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		result += ")";
 		return result;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == this)
 			return true;
-		
+
 		if (obj == null)
 			return false;
-		
+
 		if (!obj.getClass().equals(this.getClass()))
 			return false;
-	
+
 		if (obj.hashCode() != this.hashCode())
 			return false;
-		
+
 		return true;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		long sum = 0;
-		
+
 		ActionField hashFields = new ActionField() {
 			public Object calcField (Field field, Object value) {
 				long result = 0;
@@ -127,8 +129,8 @@ public class XObject {
 				}
 				return (int)(0x9e370001 * result) >> 32;
 			}
-		};	
-		
+		};
+
 		try {
 			for (Object h : AnnotaionAccessor.calcFields(this, hashFields).toArray()) {
 				sum += (Integer)h;
@@ -136,10 +138,10 @@ public class XObject {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return (int)((0x9e370001 * sum) >> 32);
 	}
-	
+
 	public void genFullName(){
 		String fullName = this.getName();
 
@@ -147,12 +149,12 @@ public class XObject {
 			XGroup grp = this.getGroup();
 			if (grp.getFullName().equals("/")) {
 				fullName = grp.getFullName() + fullName;
-			} 
-			else { 
+			}
+			else {
 				fullName = grp.getFullName() + "/" + fullName;
 			}
 		}
-		
+
 		this.fullName = fullName;
 	}
 }
