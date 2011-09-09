@@ -87,7 +87,7 @@ class RESTServer < Sinatra::Base
     @obj = @@root.getObject(path)
     if @obj
       @obj.extend(JavaHelper)
-      @obj.update_fields(params["obj"])
+      @obj.from_hash(params["obj"])
     end
     redirect @@prefix + @obj.fullName
   end
