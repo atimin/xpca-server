@@ -1,9 +1,7 @@
 package net.flipback.xpca.annotations;
 
-
 import java.lang.reflect.InvocationTargetException;
-import java.util.Dictionary;
-import java.util.Enumeration;
+import java.util.HashMap;
 
 import junit.framework.TestCase;
 
@@ -29,29 +27,31 @@ public class AnnotationAccessorTest extends TestCase {
 
 	@Test
 	public void testGetFieldValues() throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-		Dictionary<Field, Object> fields = AnnotaionAccessor.getFieldValues(obj);
-		for(Enumeration<Field> keys = fields.keys(); keys.hasMoreElements();) {
-			Field key = keys.nextElement();
-			if (key.title().equals("Name"))
-				assertEquals(fields.get(key), obj.getName());
-			if (key.title().equals("ID"))
-				assertEquals(fields.get(key), obj.getId());
-			if (key.title().equals("Group"))
-				assertEquals(fields.get(key), obj.getGroup());
-		}
+		HashMap<Field, Object> fields = AnnotaionAccessor.getFieldValues(obj);
+		Field[] keys = fields.keySet().toArray(new Field[fields.size()]);
+		
+		assertTrue(keys[0].title().equals("ID"));
+	    assertEquals(fields.get(keys[0]), obj.getId());
+	      
+	    assertTrue(keys[1].title().equals("Name"));
+		assertEquals(fields.get(keys[1]), obj.getName());
+
+		assertTrue(keys[2].title().equals("Group"));
+	    assertEquals(fields.get(keys[2]), obj.getGroup());
 	}
 	
 	public void testGetFieldNames() throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-		Dictionary<Field, String> fields = AnnotaionAccessor.getFieldNames(obj);
-		for(Enumeration<Field> keys = fields.keys(); keys.hasMoreElements();) {
-			Field key = keys.nextElement();
-			if (key.title().equals("ame"))
-				assertEquals(fields.get(key), "name");
-			if (key.title().equals("ID"))
-				assertEquals(fields.get(key), "id");
-			if (key.title().equals("Group"))
-				assertEquals(fields.get(key), "group");
-		}
+		HashMap<Field, Object> fields = AnnotaionAccessor.getFieldNames(obj);
+		Field[] keys = fields.keySet().toArray(new Field[fields.size()]);
+	
+	    assertTrue(keys[0].title().equals("ID"));
+	    assertEquals(fields.get(keys[0]), "id");
+	    	    
+		assertTrue(keys[1].title().equals("Name"));
+		assertEquals(fields.get(keys[1]), "name");
+
+	    assertTrue(keys[2].title().equals("Group"));
+	    assertEquals(fields.get(keys[2]), "group");
 	}
 	
 	@After

@@ -28,12 +28,12 @@ public class XObject {
 
 	@Id
 	@GeneratedValue
-	@Field(title="ID")
+	@Field(title="ID", order=0)
 	public Long getId() { return id; }
 	public void setId(Long id) { this.id = id; }
 	private Long id;
 
-	@Field(title="Name", inputType=InputType.TEXT)
+	@Field(title="Name", order=1, inputType=InputType.TEXT)
 	public String getName() { return name; }
 	public void setName(String name) {
 		this.name = name;
@@ -43,7 +43,7 @@ public class XObject {
 
 	@ManyToOne
 	@JoinColumn(name="object_id")
-	@Field(title="Group")
+	@Field(title="Group", order=2)
 	public XGroup getGroup() { return group; }
 	public void setGroup(XGroup group) {
 		this.group = group;

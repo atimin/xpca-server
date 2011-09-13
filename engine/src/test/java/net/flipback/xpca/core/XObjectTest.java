@@ -1,7 +1,5 @@
 package net.flipback.xpca.core;
 
-import java.util.HashSet;
-
 import junit.framework.TestCase;
 import net.flipback.xpca.AllTests;
 import net.flipback.xpca.core.XObject;

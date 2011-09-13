@@ -2,15 +2,17 @@ package net.flipback.xpca.annotations;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Dictionary;
-import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.LinkedHashMap;
 
 import net.flipback.xpca.core.XObject;
 
 public class AnnotaionAccessor {
-	public static Dictionary<Field, Object> getFieldValues(XObject xobj) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+	public static LinkedHashMap<Field, Object> getFieldValues(XObject xobj) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
 		Dictionary<Field, Object>  fields = new  Hashtable<Field, Object> ();
 		for (Method method : xobj.getClass().getMethods()) {
 			Field field = method.getAnnotation(Field.class);
@@ -20,11 +22,11 @@ public class AnnotaionAccessor {
 					fields.put(field, result);
 			}
 		} 
-		return fields;
+		return sortFields(fields);
 	}
 	
-	public static Dictionary<Field, String> getFieldNames(XObject xobj) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-		Dictionary<Field, String>  fields = new  Hashtable<Field, String> ();
+	public static LinkedHashMap<Field, Object> getFieldNames(XObject xobj) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+		Dictionary<Field, Object>  fields = new  Hashtable<Field, Object> ();
 		for (Method method : xobj.getClass().getMethods()) {
 			Field field = method.getAnnotation(Field.class);
 			if (field != null) {			
@@ -34,18 +36,29 @@ public class AnnotaionAccessor {
 					fields.put(field, result);
 			}
 		} 
-		return fields;
+
+		return sortFields(fields);
 	}
-	
+
 	public static HashSet<Object> calcFields(XObject xobj, ActionField action) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
 		HashSet<Object> result = new HashSet<Object>();
-		Dictionary<Field, Object> fields = getFieldValues(xobj);
+		LinkedHashMap<Field, Object> fields = getFieldValues(xobj);
 		
-		for (Enumeration<Field> field = fields.keys(); field.hasMoreElements(); ) {
-			Field f = field.nextElement();
-			result.add(action.calcField(f, fields.get(f)));
+		for (Field field : fields.keySet()) {
+			result.add(action.calcField(field, fields.get(field)));
 		}
 		
 		return result;
+	}
+	
+	private static LinkedHashMap<Field, Object> sortFields(Dictionary<Field, Object> fields) {
+		ArrayList<Field> sorted_keys = Collections.list(fields.keys());
+		Collections.sort(sorted_keys, new FieldOrder());
+		LinkedHashMap<Field, Object>  sorted_fields = new  LinkedHashMap<Field, Object> ();
+		
+		for (Field field : sorted_keys) {
+			sorted_fields.put(field, fields.get(field));
+		}
+		return sorted_fields;
 	}
 }
