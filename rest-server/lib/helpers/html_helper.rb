@@ -4,13 +4,13 @@ $: << File.join(File.dirname(__FILE__),'lib')
 java_import  'net.flipback.xpca.annotations.AnnotaionAccessor'
 java_import  'net.flipback.xpca.annotations.Field'
 
-module HtmlHelper  
+module HtmlHelper
   attr_accessor :prefix
-  
+
   def html_tree
     html = "<ul id='tree_objects'>"
     html << html_link
-    
+
     self.getChildren.each  do |o|
       o.extend(HtmlHelper)
       o.prefix = @prefix
@@ -22,25 +22,25 @@ module HtmlHelper
       end
       html << "</li>"
     end
-    
+
     html << "</ul>"
   end
-  
+
   def html_root_tree
     root = self.getRoot
     root.extend(HtmlHelper)
-    rott.prefix = @prefix
+    root.prefix = @prefix
     root.html_tree
   end
-  
+
   def html_show
     html = ""
     field_names = AnnotaionAccessor.getFieldNames(self)
-    AnnotaionAccessor.getFieldValues(self).each_pair do |f, o|
+    AnnotaionAccessor.getFieldValues(self).each_pair do |f,o|
       html << f.title + ":\t"
       case f.inputType
       when Field::InputType::TEXT then
-        html << "<input type='text' name='obj[#{field_names[f]}]' value='#{o.to_s}'/>"    
+        html << "<input type='text' name='obj[#{field_names[f]}]' value='#{o.to_s}'/>"
       else
         if o.class <= XObject
           o.extend(HtmlHelper)
@@ -56,7 +56,7 @@ module HtmlHelper
     html << "</selected>"
     html
   end
-  
+
   def html_link
     "<a href='#{@prefix + self.getFullName}'>#{self.getName}</a>"
   end
