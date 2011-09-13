@@ -1,6 +1,7 @@
 package net.flipback.xpca.core;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -70,5 +71,9 @@ public class XGroup extends XObject {
 	
 	public XGroup(String name) {
 		super(name);
+	}
+	
+	{
+		setChildren(new HashSet<XObject>());
 	}
 }

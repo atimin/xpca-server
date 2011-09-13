@@ -1,5 +1,7 @@
 package net.flipback.xpca.core;
 
+import java.util.HashSet;
+
 import junit.framework.TestCase;
 import net.flipback.xpca.AllTests;
 import net.flipback.xpca.core.XObject;
@@ -26,6 +28,12 @@ public class XObjectTest extends TestCase {
 		other_obj.setId(obj.getId());
 		other_obj.setName(obj.getName());
 		other_obj.setGroup(obj.getGroup());
+	}
+	@Test
+	public void testInitialization() {
+		XObject obj = new XObject();
+		assertTrue(obj.getName().equals("new_object"));
+		assertNull(obj.getGroup());
 	}
 	
 	@Test

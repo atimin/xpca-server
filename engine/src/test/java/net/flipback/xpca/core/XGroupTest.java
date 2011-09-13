@@ -1,5 +1,7 @@
 package net.flipback.xpca.core;
 
+import java.util.HashSet;
+
 import net.flipback.xpca.AllTests;
 
 import org.hibernate.Session;
@@ -23,6 +25,13 @@ public class XGroupTest extends TestCase {
 		group_1 = (XGroup) session.createQuery("from XObject where fullName=:name").setString("name", "/group_1").uniqueResult();
 		object_1 = (XObject) session.createQuery("from XObject where fullName=:name").setString("name", "/group_1/object_1").uniqueResult();
 		session.getTransaction().commit();	
+	}
+	
+	@Test
+	public void testInitialization() {
+		XGroup group = new XGroup();
+		assertTrue(group.getName().equals("new_group"));
+		assertTrue(group.getChildren().equals(new HashSet<XObject>()));
 	}
 	
 	@Test

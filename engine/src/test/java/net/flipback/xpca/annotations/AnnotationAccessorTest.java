@@ -8,7 +8,6 @@ import java.util.Enumeration;
 import junit.framework.TestCase;
 
 import net.flipback.xpca.AllTests;
-import net.flipback.xpca.core.XGroup;
 import net.flipback.xpca.core.XObject;
 
 import org.hibernate.Session;
