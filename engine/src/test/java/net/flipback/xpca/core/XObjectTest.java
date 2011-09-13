@@ -65,10 +65,10 @@ public class XObjectTest extends TestCase {
 	@Test
 	public void testToString() {
 		String str = obj.toString(); 
-		assertTrue(str.contains("<XObject:" + obj.hashCode() +">"));
-		assertTrue(str.contains("Name=object_1"));
-		assertTrue(str.contains("ID=" + obj.getId()));
-		assertTrue(str.contains("Group=" + obj.getGroup().getFullName()));
+		assertTrue(str.equals("<XObject:" + obj.hashCode() + 
+				">(ID=" + obj.getId() + 
+				",Name=" + obj.getName() + 
+				",Group=" + obj.getGroup().getFullName() + ")"));
 	}
 
 	@Test

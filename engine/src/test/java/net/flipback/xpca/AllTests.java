@@ -10,6 +10,7 @@ import net.flipback.xpca.core.XGroupTest;
 import net.flipback.xpca.core.XObject;
 import net.flipback.xpca.core.XObjectTest;
 import net.flipback.xpca.core.XPoint;
+import net.flipback.xpca.core.XPointTest;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
@@ -21,7 +22,7 @@ public class AllTests {
 	public static Test suite() {
 		InitDB();
 		
-		Class[] testClasses  = { XObjectTest.class, XGroupTest.class, AnnotationAccessorTest.class };
+		Class[] testClasses  = { XObjectTest.class, XGroupTest.class, AnnotationAccessorTest.class, XPointTest.class };
 		TestSuite suite = new TestSuite(testClasses);
 		
 		return suite;

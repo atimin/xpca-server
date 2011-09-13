@@ -4,40 +4,34 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Dictionary;
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.LinkedHashMap;
 
 import net.flipback.xpca.core.XObject;
 
 public class AnnotaionAccessor {
 	public static LinkedHashMap<Field, Object> getFieldValues(XObject xobj) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-		Dictionary<Field, Object>  fields = new  Hashtable<Field, Object> ();
-		for (Method method : xobj.getClass().getMethods()) {
-			Field field = method.getAnnotation(Field.class);
-			if (field != null) {			
-				Object result = method.invoke(xobj);
-				if (result != null)
-					fields.put(field, result);
-			}
+		LinkedHashMap<Field, Object>  fields = new  LinkedHashMap<Field, Object> ();
+		
+		for (FieldInfo fi : getInfoFields(xobj)) {		
+			Object result = fi.getMethod().invoke(xobj);
+			if (result != null)
+				fields.put(fi.getField(), result);
 		} 
-		return sortFields(fields);
+		return fields;
 	}
 	
 	public static LinkedHashMap<Field, Object> getFieldNames(XObject xobj) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-		Dictionary<Field, Object>  fields = new  Hashtable<Field, Object> ();
-		for (Method method : xobj.getClass().getMethods()) {
-			Field field = method.getAnnotation(Field.class);
-			if (field != null) {			
-				String result = method.getName().replaceFirst("get", "");
-				result = result.substring(0,1).toLowerCase() + result.substring(1, result.length());
-				if (result != null)
-					fields.put(field, result);
-			}
+		LinkedHashMap<Field, Object>  fields = new  LinkedHashMap<Field, Object> ();
+		
+		for (FieldInfo fi : getInfoFields(xobj)) {
+			String result = fi.getMethod().getName().replaceFirst("get", "");
+			result = result.substring(0,1).toLowerCase() + result.substring(1, result.length());
+			if (result != null)
+				fields.put(fi.getField(), result);			
 		} 
 
-		return sortFields(fields);
+		return fields;
 	}
 
 	public static HashSet<Object> calcFields(XObject xobj, ActionField action) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
@@ -51,14 +45,19 @@ public class AnnotaionAccessor {
 		return result;
 	}
 	
-	private static LinkedHashMap<Field, Object> sortFields(Dictionary<Field, Object> fields) {
-		ArrayList<Field> sorted_keys = Collections.list(fields.keys());
-		Collections.sort(sorted_keys, new FieldOrder());
-		LinkedHashMap<Field, Object>  sorted_fields = new  LinkedHashMap<Field, Object> ();
+	public static ArrayList<FieldInfo> getInfoFields(XObject xobj) {
+		ArrayList<FieldInfo> sorted_fields = new ArrayList<FieldInfo>(0);
 		
-		for (Field field : sorted_keys) {
-			sorted_fields.put(field, fields.get(field));
+		for (Method method : xobj.getClass().getMethods()) {
+			Class<?> klass =  method.getDeclaringClass();
+			Field field = method.getAnnotation(Field.class);
+			if (field != null) {			
+				sorted_fields.add(new FieldInfo(field, klass, method));
+			}
 		}
+		
+		Collections.sort(sorted_fields, new FieldOrder());
+		
 		return sorted_fields;
 	}
 }
