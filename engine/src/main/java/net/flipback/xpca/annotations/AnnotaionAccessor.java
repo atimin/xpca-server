@@ -4,7 +4,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 
 import net.flipback.xpca.core.XObject;
@@ -32,17 +31,6 @@ public class AnnotaionAccessor {
 		} 
 
 		return fields;
-	}
-
-	public static HashSet<Object> calcFields(XObject xobj, ActionField action) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-		HashSet<Object> result = new HashSet<Object>();
-		LinkedHashMap<Field, Object> fields = getFieldValues(xobj);
-		
-		for (Field field : fields.keySet()) {
-			result.add(action.calcField(field, fields.get(field)));
-		}
-		
-		return result;
 	}
 	
 	public static ArrayList<FieldInfo> getInfoFields(XObject xobj) {
