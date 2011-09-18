@@ -13,6 +13,8 @@ import javax.persistence.Table;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.sun.org.apache.regexp.internal.recompile;
+
 @Entity
 @Table(name="groups")
 public class XGroup extends XObject {	
@@ -23,6 +25,15 @@ public class XGroup extends XObject {
 	public void setChildren(Set<XObject> children) { this.children = children; 	}
 	private Set<XObject> children;
 	
+	public XObject getChild(String name) {
+		XObject child = null;	
+		for (XObject xobj : children) {
+			if (xobj.getName().equals(name)) {
+				child = xobj;
+			}
+		}
+		return child;
+	}
 	public XObject getObject(String path) {
 		XObject result = null;
 		

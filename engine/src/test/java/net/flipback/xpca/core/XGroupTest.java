@@ -40,6 +40,11 @@ public class XGroupTest extends TestCase {
 	}
 	
 	@Test
+	public void testGetChildrenByName() {
+		assertEquals(group_1, root.getChild("group_1"));
+	}
+	
+	@Test
 	public void testGetObj() {
 		assertEquals(object_1, root.getObject("group_1/object_1"));
 		assertEquals(object_1, root.getObject("./group_1/object_1"));
