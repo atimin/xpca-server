@@ -1,6 +1,5 @@
 require 'java'
 
-$: << File.join(File.dirname(__FILE__),'lib')
 java_import  'net.flipback.xpca.annotations.AnnotaionAccessor'
 java_import  'net.flipback.xpca.annotations.Field'
 
