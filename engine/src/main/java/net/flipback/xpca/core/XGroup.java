@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
@@ -13,12 +12,10 @@ import javax.persistence.Table;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.sun.org.apache.regexp.internal.recompile;
-
 @Entity
 @Table(name="groups")
 public class XGroup extends XObject {	
-	@OneToMany(fetch=FetchType.EAGER)
+	@OneToMany
 	@JoinColumn(name="object_id")
 	@OrderBy(value="name")
 	public Set<XObject> getChildren() { return children; }
