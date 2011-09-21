@@ -50,9 +50,10 @@ public class EngineTest extends TestCase {
 	
 	@Test
 	public void testCustumRootName() {
-		Engine eng = new Engine(AllTests.sessionFactory, "/test");
+		Engine eng = new Engine(AllTests.sessionFactory, "/root");
+		eng.addObject("/root", new XObject("test"));
 		
-		assertTrue(eng.getRoot().getFullName().equals("/test"));
+		assertTrue(eng.getObject("/root/test").getName().equals("test"));
 	}
 	
 	@Test 

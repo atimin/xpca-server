@@ -40,24 +40,7 @@ public class Engine {
 	}
 	
 	public XObject getObject(String path) {	
-		XObject xobj = root;
-		
-		if (path.equals("") || path.endsWith("/")) {
-			return xobj;
-		}
-		
-		String[] split_path = path.split("/");
-		
-		for (String name : split_path) {
-			if (xobj == null) {
-				break;
-			}
-			
-			if (name.length() > 0 && xobj instanceof XGroup) {
-				xobj = ((XGroup)xobj).getChild(name);
-			}
-		}
-		return xobj;
+		return getObject(path, root);
 	}
 	
 	public Engine(SessionFactory sessionFactory, String root_name) {
@@ -116,6 +99,32 @@ public class Engine {
 			root = new XGroup(root_name);
 			commit();
 		}
+	}
+	
+	private XObject getObject(String path, XObject xobj) {
+		if (xobj.getName().equals(path)) {
+			return xobj;
+		}
+		
+		XObject result = null;
+		
+		path = path.replaceFirst(xobj.getName(), "");
+		if (!xobj.getName().equals("/")) {
+			path = path.replaceFirst("/", "");
+		}
+		
+		if (xobj instanceof XGroup) {
+			XGroup group = (XGroup)xobj;
+			
+			for (XObject child : group.getChildren()) {
+				result = getObject(path, child);
+				if (result != null) {
+					break;
+				}
+			}
+		}
+		
+		return result;
 	}
 	
 }
