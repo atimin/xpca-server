@@ -9,8 +9,7 @@ require 'helpers/package_helper'
 java_import "net.flipback.xpca.core.Engine"
 java_import "org.hibernate.cfg.Configuration"
 
-ENGINE = Engine.new(Configuration.new.configure())
-ENGINE.start
+ENGINE = Engine.new(Configuration.new.configure().buildSessionFactory())
 
 CORE = PackageHelper.new("net.flipback.xpca.core")
 
@@ -24,6 +23,7 @@ ENGINE.addObject "/", CORE.make_instance("XGroup", "group_2")
 ENGINE.addObject "/group_2", CORE.make_instance("XObject", "xobj_1")
 ENGINE.addObject "/group_2", CORE.make_instance("XObject", "xobj_2")
 ENGINE.addObject "/group_2", CORE.make_instance("XPoint", "xpoint_1")
+ENGINE.commit
 
 class RESTServer < Sinatra::Base
   set :public, File.join(File.dirname(__FILE__), 'public')
