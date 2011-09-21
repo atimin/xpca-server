@@ -4,15 +4,12 @@ java_import  'net.flipback.xpca.annotations.AnnotaionAccessor'
 java_import  'net.flipback.xpca.annotations.Field'
 
 module HtmlHelper
-  attr_accessor :prefix
-
   def html_tree
     html = "<ul id='tree_objects'>"
     html << html_link
 
     self.getChildren.each  do |o|
       o.extend(HtmlHelper)
-      o.prefix = @prefix
       html << "<li>"
       if(o.instance_of? XGroup)
         html << o.html_tree
@@ -28,7 +25,6 @@ module HtmlHelper
   def html_root_tree
     root = self.getRoot
     root.extend(HtmlHelper)
-    root.prefix = @prefix
     root.html_tree
   end
 
@@ -43,7 +39,6 @@ module HtmlHelper
       else
         if o.class <= XObject
           o.extend(HtmlHelper)
-          o.prefix = @prefix
           html << o.html_link
         else
           html << o.to_s
@@ -57,6 +52,6 @@ module HtmlHelper
   end
 
   def html_link
-    "<a href='#{@prefix + self.getFullName}'>#{self.getName}</a>"
+    "<a href='#{self.getFullName}'>#{self.getName}</a>"
   end
 end

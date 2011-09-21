@@ -9,47 +9,46 @@ require 'helpers/package_helper'
 java_import "net.flipback.xpca.core.Engine"
 java_import "org.hibernate.cfg.Configuration"
 
-ENGINE = Engine.new(Configuration.new.configure().buildSessionFactory())
+ENGINE = Engine.new(Configuration.new.configure().buildSessionFactory(), "/xpca")
 
 CORE = PackageHelper.new("net.flipback.xpca.core")
 
 #init ENGINE (temp resolve)
-ENGINE.addObject "/", CORE.make_instance("XGroup", "group_1")
+ENGINE.addObject "/xpca",    CORE.make_instance("XGroup", "group_1")
 
-ENGINE.addObject "/group_1", CORE.make_instance("XObject", "xobj_1")
-ENGINE.addObject "/group_1", CORE.make_instance("XObject", "xobj_2")
-ENGINE.addObject "/group_1", CORE.make_instance("XPoint", "xpoint_1")
-ENGINE.addObject "/", CORE.make_instance("XGroup", "group_2")
-ENGINE.addObject "/group_2", CORE.make_instance("XObject", "xobj_1")
-ENGINE.addObject "/group_2", CORE.make_instance("XObject", "xobj_2")
-ENGINE.addObject "/group_2", CORE.make_instance("XPoint", "xpoint_1")
+ENGINE.addObject "/xpca/group_1", CORE.make_instance("XObject", "xobj_1")
+ENGINE.addObject "/xpca/group_1", CORE.make_instance("XObject", "xobj_2")
+ENGINE.addObject "/xpca/group_1", CORE.make_instance("XPoint", "xpoint_1")
+ENGINE.addObject "/xpca",         CORE.make_instance("XGroup", "group_2")
+ENGINE.addObject "/xpca/group_2", CORE.make_instance("XObject", "xobj_1")
+ENGINE.addObject "/xpca/group_2", CORE.make_instance("XObject", "xobj_2")
+ENGINE.addObject "/xpca/group_2", CORE.make_instance("XPoint", "xpoint_1")
 ENGINE.commit
 
 class RESTServer < Sinatra::Base
   set :public, File.join(File.dirname(__FILE__), 'public')
   set :views, File.join(File.dirname(__FILE__), 'views')
-  @@prefix = "/xpca"
 
   before do
-    @root = ENGINE.getObject("/")
+    @root = ENGINE.getRoot
     @root.extend(HtmlHelper)
-    @root.prefix = @@prefix
   end
 
-  post Regexp.new(@@prefix + "(\/.*)") do |path|
+  post /(\/.*)/ do |path|
     @obj = ENGINE.getObject(path)
     if @obj
       @obj.extend(JavaHelper)
       @obj.from_hash(params["obj"])
+      ENGINE.updateObject(path, @obj)
     end
-    redirect @@prefix + @obj.fullName
+    redirect @obj.fullName
   end
 
-  get Regexp.new(@@prefix + "(\/.*)") do |path|
+  get /(\/.*)/ do |path|
     puts path
     @obj = ENGINE.getObject(path)
+    puts @obj
     @obj.extend(HtmlHelper)
-    @obj.prefix = @@prefix
     haml :object_show
   end
 end
