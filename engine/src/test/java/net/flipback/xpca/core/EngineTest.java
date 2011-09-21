@@ -48,6 +48,13 @@ public class EngineTest extends TestCase {
 		assertNull(eng.getObject("/added_object"));
 	}
 	
+	@Test
+	public void testCustumRootName() {
+		Engine eng = new Engine(AllTests.sessionFactory, "/test");
+		
+		assertTrue(eng.getRoot().getFullName().equals("/test"));
+	}
+	
 	@Test 
 	public void testCommit() {
 		testAddObject();

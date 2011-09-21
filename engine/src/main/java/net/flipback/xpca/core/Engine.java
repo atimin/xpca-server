@@ -5,7 +5,10 @@ import org.hibernate.Session;
 
 public class Engine {
 	private SessionFactory sessionFactory;
-	private XGroup root;
+	private XGroup root = new XGroup("/");
+	public XGroup getRoot() {
+		return root;
+	}
 
 	public void addObject(String path, XObject xobj) {		
 		XGroup group = (XGroup)getObject(path);
@@ -56,16 +59,18 @@ public class Engine {
 		}
 		return xobj;
 	}
+	
+	public Engine(SessionFactory sessionFactory, String root_name) {
+		this.sessionFactory = sessionFactory;
+
+		getRoot(root_name);
+	}
 		
 	public Engine(SessionFactory sessionFactory)
 	{
 		this.sessionFactory = sessionFactory;
 
-		revert();	
-		if (root == null) {
-			root = new XGroup("/");
-			commit();
-		}
+		getRoot("/");
 	}
 	
 	public void commit() {
@@ -82,7 +87,7 @@ public class Engine {
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
 		
-		root = (XGroup) session.createQuery("from XObject where fullName = ?").setParameter(0, "/").uniqueResult();
+		root = (XGroup) session.createQuery("from XObject where fullName = ?").setParameter(0, root.getFullName()).uniqueResult();
 		
 		session.getTransaction().commit();
 		session.close();
@@ -96,6 +101,21 @@ public class Engine {
 			}
 		} 
 		session.saveOrUpdate(xobj);
+	}
+	
+	private void getRoot(String root_name) {
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+		
+		root = (XGroup) session.createQuery("from XObject where fullName = ?").setParameter(0, root_name).uniqueResult();
+		
+		session.getTransaction().commit();
+		session.close();
+		
+		if (root == null) {
+			root = new XGroup(root_name);
+			commit();
+		}
 	}
 	
 }
