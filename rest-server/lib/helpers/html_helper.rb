@@ -1,4 +1,5 @@
 require 'java'
+require File.join(File.dirname(__FILE__), "package_helper")
 
 java_import  'net.flipback.xpca.annotations.AnnotaionAccessor'
 java_import  'net.flipback.xpca.annotations.Field'
@@ -46,8 +47,13 @@ module HtmlHelper
       end
       html << "<br/>"
     end
-    html << "<selected name[class]>"
-    html << "</selected>"
+
+    pkg = PackageHelper.new("net.flipback.xpca.core")
+    html << "<select name[class]>"
+    pkg.classes.each do |kl|
+      html << "<option value='#{kl.name.split("::")[-1]}'>#{kl.name.split("::")[-1]}</option>" if kl <= pkg.get_class("XObject")
+    end
+    html << "</select>"
     html
   end
 
