@@ -28,6 +28,7 @@
 					require 'rubygems'
 					require 'java'
 					require 'rest_server'
+          RESTServer.run!
 				</script>
 			</configuration>
           </plugin>
@@ -69,6 +70,12 @@
         <groupId>rubygems</groupId>
         <artifactId>rake</artifactId>
         <version>0.9.2</version>
+        <type>gem</type>
+    </dependency>
+    <dependency>
+        <groupId>rubygems</groupId>
+        <artifactId>rack-test</artifactId>
+        <version>0.6.1</version>
         <type>gem</type>
     </dependency>
   </dependencies>

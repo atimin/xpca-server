@@ -45,12 +45,8 @@ class RESTServer < Sinatra::Base
   end
 
   get /(\/.*)/ do |path|
-    puts path
     @obj = ENGINE.getObject(path)
-    puts @obj
     @obj.extend(HtmlHelper)
     haml :object_show
   end
 end
-
-RESTServer.run!
